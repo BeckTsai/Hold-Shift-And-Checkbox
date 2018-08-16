@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+
+
+  <div class="inbox">
+    <div class="item">
+      <input type="checkbox">
+      <p>This is an inbox layout.</p>
+    </div>
+    <div class="item">
+      <input type="checkbox">
+      <p>Check one item</p>
+    </div>
+    <div class="item">
+      <input type="checkbox">
+      <p>Hold down your Shift key</p>
+    </div>
+    <div class="item">
+      <input type="checkbox">
+      <p>Check a lower item</p>
+    </div>
+    <div class="item">
+      <input type="checkbox">
+      <p>Everything inbetween should also be set to checked</p>
+    </div>
+    <div class="item">
+      <input type="checkbox">
+      <p>Try do it with out any libraries</p>
+    </div>
+    <div class="item">
+      <input type="checkbox">
+      <p>Just regular JavaScript</p>
+    </div>
+    <div class="item">
+      <input type="checkbox">
+      <p>Good Luck!</p>
+    </div>
+    <div class="item">
+      <input type="checkbox">
+      <p>Don't forget to tweet your result!</p>
+    </div>
+  </div>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.js'></script>
+  <script>
+    new Vue({
+      el: ".inbox",
+      data: () => {
+        return {
+          lastChecked: '',
+          onOff: false
+        }
+      },
+      computed: {
+        boxes() {
+          let boxes = document.querySelectorAll('.inbox input[type="checkbox"]')
+          return boxes
+        },
+        boxArr() {
+          const boxArr = Array.from(this.boxes);
+          return boxArr
+        }
+
+      },
+      methods: {
+        handleCheck(e) {
+          let checkbox = e.currentTarget
+          if (!this.lastChecked) this.lastChecked = checkbox;
+          this.onOff = this.lastChecked.checked ? true : false;
+          if (e.shiftKey) {
+            let start = this.boxArr.indexOf(checkbox);
+            let end = this.boxArr.indexOf(this.lastChecked);
+            this.boxArr.slice(Math.min(start, end), Math.max(start, end) + 1).forEach(input => input.checked = this.onOff);
+          }
+          this.lastChecked = checkbox;
+        }
+      },
+      mounted() {
+        this.boxes.forEach(box => box.addEventListener('click', this.handleCheck))
+      }
+    })
+  </script>
+</body>
+
+</html>
